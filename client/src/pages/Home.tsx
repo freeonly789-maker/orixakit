@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react"
+import { useLocation } from "wouter"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Copy, Check, Search } from "lucide-react"
+import { Copy, Check, Search, ArrowRight } from "lucide-react"
 
 const REGISTRY_ITEMS = [
   {
@@ -93,6 +94,7 @@ const CATEGORIES = [
 ]
 
 export default function Home() {
+  const [, navigate] = useLocation()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [copiedId, setCopiedId] = useState<string | null>(null)
@@ -233,25 +235,36 @@ export default function Home() {
                   </code>
                 </div>
 
-                {/* Copy Button */}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleCopy(item.name)}
-                  className="w-full gap-2"
-                >
-                  {copiedId === item.name ? (
-                    <>
-                      <Check className="h-4 w-4" />
-                      Copied!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="h-4 w-4" />
-                      Copy Install Command
-                    </>
-                  )}
-                </Button>
+                {/* Buttons */}
+                <div className="space-y-2">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => navigate(`/component/${item.name}`)}
+                    className="w-full gap-2"
+                  >
+                    View Documentation
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleCopy(item.name)}
+                    className="w-full gap-2"
+                  >
+                    {copiedId === item.name ? (
+                      <>
+                        <Check className="h-4 w-4" />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-4 w-4" />
+                        Copy Install Command
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
