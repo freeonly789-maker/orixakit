@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "orix-dashboard-01",
+  "title": "Dashboard Overview",
+  "description": "Stats grid with cards showing key metrics. Responsive 2/4-col layout.",
+  "registryDependencies": [
+    "card",
+    "orix-card"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/blocks/orix-dashboard-01/page.tsx",
+      "content": "import { StatsCard } from \"./components/stats-card\"\n\nexport default function DashboardPage() {\n  return (\n    <div className=\"min-h-screen bg-background p-8\">\n      <div className=\"max-w-6xl mx-auto\">\n        <div className=\"mb-8\">\n          <h1 className=\"text-3xl font-bold\">Dashboard</h1>\n          <p className=\"text-muted-foreground mt-2\">Welcome back! Here's your performance overview.</p>\n        </div>\n        <div className=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4\">\n          <StatsCard\n            title=\"Total Revenue\"\n            value=\"$45,231.89\"\n            description=\"+20.1% from last month\"\n          />\n          <StatsCard\n            title=\"Active Users\"\n            value=\"2,543\"\n            description=\"+12% from last month\"\n          />\n          <StatsCard\n            title=\"Conversions\"\n            value=\"1,234\"\n            description=\"+5.2% from last month\"\n          />\n          <StatsCard\n            title=\"Bounce Rate\"\n            value=\"42.3%\"\n            description=\"-2.1% from last month\"\n          />\n        </div>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:page",
+      "target": "app/dashboard/page.tsx"
+    },
+    {
+      "path": "registry/new-york/blocks/orix-dashboard-01/components/stats-card.tsx",
+      "content": "import { OrixCard } from \"@/components/ui/orix-card\"\n\ninterface StatsCardProps {\n  title: string\n  value: string\n  description: string\n}\n\nexport function StatsCard({ title, value, description }: StatsCardProps) {\n  return (\n    <OrixCard title={title} description={description} hover>\n      <div className=\"mt-4\">\n        <p className=\"text-2xl font-bold\">{value}</p>\n      </div>\n    </OrixCard>\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "categories": [
+    "blocks",
+    "dashboard"
+  ],
+  "type": "registry:block"
+}

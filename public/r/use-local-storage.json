@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-local-storage",
+  "title": "useLocalStorage",
+  "description": "Type-safe localStorage hook with SSR safety and JSON serialization.",
+  "files": [
+    {
+      "path": "registry/new-york/hooks/use-local-storage/use-local-storage.ts",
+      "content": "/**\n * useLocalStorage\n * SSR-safe localStorage hook with type inference and JSON serialization.\n * @orixakit/use-local-storage\n */\n\"use client\"\n\nimport { useState, useEffect, useCallback } from \"react\"\n\nexport function useLocalStorage<T>(\n  key: string,\n  initialValue: T\n): [T, (value: T | ((prev: T) => T)) => void, () => void] {\n  const [storedValue, setStoredValue] = useState<T>(initialValue)\n\n  useEffect(() => {\n    try {\n      const item = window.localStorage.getItem(key)\n      if (item !== null) setStoredValue(JSON.parse(item))\n    } catch {\n      console.warn(`useLocalStorage: error reading key \"${key}\"`)\n    }\n  }, [key])\n\n  const setValue = useCallback(\n    (value: T | ((prev: T) => T)) => {\n      try {\n        const valueToStore =\n          value instanceof Function ? value(storedValue) : value\n        setStoredValue(valueToStore)\n        window.localStorage.setItem(key, JSON.stringify(valueToStore))\n      } catch {\n        console.warn(`useLocalStorage: error setting key \"${key}\"`)\n      }\n    },\n    [key, storedValue]\n  )\n\n  const removeValue = useCallback(() => {\n    try {\n      window.localStorage.removeItem(key)\n      setStoredValue(initialValue)\n    } catch {\n      console.warn(`useLocalStorage: error removing key \"${key}\"`)\n    }\n  }, [key, initialValue])\n\n  return [storedValue, setValue, removeValue]\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "hooks",
+    "utils"
+  ],
+  "type": "registry:hook"
+}

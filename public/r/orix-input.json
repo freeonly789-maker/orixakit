@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "orix-input",
+  "title": "Orix Input",
+  "description": "Input with built-in label, error state, and icon slot.",
+  "registryDependencies": [
+    "input",
+    "label"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/orix-input/orix-input.tsx",
+      "content": "/**\n * OrixInput\n * Input with integrated label, error message, and optional icon.\n * @orixakit/orix-input\n */\n\"use client\"\n\nimport * as React from \"react\"\nimport { Input } from \"@/components/ui/input\"\nimport { Label } from \"@/components/ui/label\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface OrixInputProps\n  extends React.InputHTMLAttributes<HTMLInputElement> {\n  label?: string\n  error?: string\n  icon?: React.ReactNode\n}\n\nexport function OrixInput({\n  label,\n  error,\n  icon,\n  id,\n  className,\n  ...props\n}: OrixInputProps) {\n  const inputId = id ?? React.useId()\n  return (\n    <div className=\"flex flex-col gap-1.5\">\n      {label && <Label htmlFor={inputId}>{label}</Label>}\n      <div className=\"relative\">\n        {icon && (\n          <span className=\"absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground\">\n            {icon}\n          </span>\n        )}\n        <Input\n          id={inputId}\n          className={cn(icon && \"pl-9\", error && \"border-destructive\", className)}\n          aria-invalid={!!error}\n          aria-describedby={error ? `${inputId}-error` : undefined}\n          {...props}\n        />\n      </div>\n      {error && (\n        <p id={`${inputId}-error`} className=\"text-xs text-destructive\">\n          {error}\n        </p>\n      )}\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "ui",
+    "primitives"
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-debounce",
+  "title": "useDebounce",
+  "description": "Debounce any value or callback with configurable delay.",
+  "files": [
+    {
+      "path": "registry/new-york/hooks/use-debounce/use-debounce.ts",
+      "content": "/**\n * useDebounce\n * Returns a debounced version of any value.\n * @orixakit/use-debounce\n */\nimport { useState, useEffect } from \"react\"\n\nexport function useDebounce<T>(value: T, delay = 300): T {\n  const [debouncedValue, setDebouncedValue] = useState<T>(value)\n  useEffect(() => {\n    const timer = setTimeout(() => setDebouncedValue(value), delay)\n    return () => clearTimeout(timer)\n  }, [value, delay])\n  return debouncedValue\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "hooks",
+    "utils"
+  ],
+  "type": "registry:hook"
+}

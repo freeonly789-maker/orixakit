@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "orix-button",
+  "title": "Orix Button",
+  "description": "Extended button with loading state, icon support, and size variants.",
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/orix-button/orix-button.tsx",
+      "content": "/**\n * OrixButton\n * Extends shadcn Button with: loading spinner, left/right icon slots, full-width option.\n * @orixakit/orix-button\n */\n\"use client\"\n\nimport * as React from \"react\"\nimport { Button, ButtonProps } from \"@/components/ui/button\"\nimport { cn } from \"@/lib/utils\"\nimport { Loader2 } from \"lucide-react\"\n\nexport interface OrixButtonProps extends ButtonProps {\n  loading?: boolean\n  leftIcon?: React.ReactNode\n  rightIcon?: React.ReactNode\n  fullWidth?: boolean\n}\n\nexport function OrixButton({\n  loading = false,\n  leftIcon,\n  rightIcon,\n  fullWidth = false,\n  children,\n  disabled,\n  className,\n  ...props\n}: OrixButtonProps) {\n  return (\n    <Button\n      disabled={disabled || loading}\n      className={cn(fullWidth && \"w-full\", className)}\n      {...props}\n    >\n      {loading ? (\n        <Loader2 className=\"mr-2 h-4 w-4 animate-spin\" />\n      ) : leftIcon ? (\n        <span className=\"mr-2\">{leftIcon}</span>\n      ) : null}\n      {children}\n      {!loading && rightIcon && <span className=\"ml-2\">{rightIcon}</span>}\n    </Button>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "categories": [
+    "ui",
+    "primitives"
+  ],
+  "type": "registry:ui"
+}

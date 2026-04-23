@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-media-query",
+  "title": "useMediaQuery",
+  "description": "Reactive media query hook. SSR-safe.",
+  "files": [
+    {
+      "path": "registry/new-york/hooks/use-media-query/use-media-query.ts",
+      "content": "/**\n * useMediaQuery\n * Reactive, SSR-safe media query hook.\n * @orixakit/use-media-query\n */\n\"use client\"\n\nimport { useState, useEffect } from \"react\"\n\nexport function useMediaQuery(query: string): boolean {\n  const [matches, setMatches] = useState(false)\n  useEffect(() => {\n    const mql = window.matchMedia(query)\n    setMatches(mql.matches)\n    const handler = (e: MediaQueryListEvent) => setMatches(e.matches)\n    mql.addEventListener(\"change\", handler)\n    return () => mql.removeEventListener(\"change\", handler)\n  }, [query])\n  return matches\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "categories": [
+    "hooks",
+    "utils"
+  ],
+  "type": "registry:hook"
+}

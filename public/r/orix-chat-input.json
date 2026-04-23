@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "orix-chat-input",
+  "title": "Chat Input",
+  "description": "Textarea-based chat input with send button, file attach slot, and keyboard shortcut (Cmd+Enter).",
+  "registryDependencies": [
+    "button",
+    "orix-button"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ai/orix-chat-input/orix-chat-input.tsx",
+      "content": "/**\n * OrixChatInput\n * Textarea-based chat input with send button, file attach slot, and keyboard shortcut (Cmd+Enter).\n * @orixakit/orix-chat-input\n */\n\"use client\"\n\nimport * as React from \"react\"\nimport { OrixButton } from \"@/components/ui/orix-button\"\nimport { Send, Paperclip } from \"lucide-react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface OrixChatInputProps {\n  onSend: (message: string) => void\n  placeholder?: string\n  disabled?: boolean\n  maxRows?: number\n  attachSlot?: React.ReactNode\n}\n\nexport function OrixChatInput({\n  onSend,\n  placeholder = \"Type your message...\",\n  disabled = false,\n  maxRows = 5,\n  attachSlot,\n}: OrixChatInputProps) {\n  const [message, setMessage] = React.useState(\"\")\n  const textareaRef = React.useRef<HTMLTextAreaElement>(null)\n\n  const handleSend = () => {\n    if (message.trim()) {\n      onSend(message)\n      setMessage(\"\")\n      if (textareaRef.current) {\n        textareaRef.current.style.height = \"auto\"\n      }\n    }\n  }\n\n  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {\n    if ((e.metaKey || e.ctrlKey) && e.key === \"Enter\") {\n      e.preventDefault()\n      handleSend()\n    }\n  }\n\n  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {\n    const textarea = e.target\n    setMessage(textarea.value)\n    textarea.style.height = \"auto\"\n    textarea.style.height = Math.min(textarea.scrollHeight, 200) + \"px\"\n  }\n\n  return (\n    <div className=\"w-full border rounded-lg bg-background p-4 space-y-3\">\n      <textarea\n        ref={textareaRef}\n        value={message}\n        onChange={handleInput}\n        onKeyDown={handleKeyDown}\n        placeholder={placeholder}\n        disabled={disabled}\n        rows={1}\n        className={cn(\n          \"w-full resize-none outline-none bg-transparent text-sm\",\n          \"placeholder:text-muted-foreground\",\n          \"disabled:opacity-50 disabled:cursor-not-allowed\"\n        )}\n      />\n      <div className=\"flex items-center justify-between\">\n        <div className=\"flex items-center gap-2\">\n          {attachSlot ? (\n            attachSlot\n          ) : (\n            <button\n              type=\"button\"\n              className=\"p-2 hover:bg-muted rounded-md transition-colors\"\n              disabled={disabled}\n            >\n              <Paperclip className=\"h-4 w-4 text-muted-foreground\" />\n            </button>\n          )}\n        </div>\n        <OrixButton\n          onClick={handleSend}\n          disabled={disabled || !message.trim()}\n          size=\"sm\"\n          leftIcon={<Send className=\"h-4 w-4\" />}\n        >\n          Send\n        </OrixButton>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "categories": [
+    "ai",
+    "input"
+  ],
+  "type": "registry:component"
+}

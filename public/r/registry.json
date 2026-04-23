@@ -1,0 +1,169 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "orixakit",
+  "homepage": "https://orixakit.dev",
+  "items": [
+    {
+      "name": "orix-button",
+      "type": "registry:ui",
+      "title": "Orix Button",
+      "description": "Extended button with loading state, icon support, and size variants.",
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/new-york/ui/orix-button/orix-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ui", "primitives"]
+    },
+    {
+      "name": "orix-input",
+      "type": "registry:ui",
+      "title": "Orix Input",
+      "description": "Input with built-in label, error state, and icon slot.",
+      "registryDependencies": ["input", "label"],
+      "files": [
+        {
+          "path": "registry/new-york/ui/orix-input/orix-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ui", "primitives"]
+    },
+    {
+      "name": "orix-card",
+      "type": "registry:ui",
+      "title": "Orix Card",
+      "description": "Card with header slot, body, and optional footer. Supports hover elevation.",
+      "registryDependencies": ["card"],
+      "files": [
+        {
+          "path": "registry/new-york/ui/orix-card/orix-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "categories": ["ui", "primitives"]
+    },
+    {
+      "name": "orix-login-01",
+      "type": "registry:block",
+      "title": "Login Form",
+      "description": "Email + password login form with validation, error handling, and submit state.",
+      "registryDependencies": ["button", "input", "label", "orix-button"],
+      "dependencies": ["zod", "react-hook-form", "@hookform/resolvers"],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/orix-login-01/page.tsx",
+          "type": "registry:page",
+          "target": "app/login/page.tsx"
+        },
+        {
+          "path": "registry/new-york/blocks/orix-login-01/components/login-form.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "categories": ["blocks", "auth"]
+    },
+    {
+      "name": "orix-dashboard-01",
+      "type": "registry:block",
+      "title": "Dashboard Overview",
+      "description": "Stats grid with cards showing key metrics. Responsive 2/4-col layout.",
+      "registryDependencies": ["card", "orix-card"],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/orix-dashboard-01/page.tsx",
+          "type": "registry:page",
+          "target": "app/dashboard/page.tsx"
+        },
+        {
+          "path": "registry/new-york/blocks/orix-dashboard-01/components/stats-card.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "categories": ["blocks", "dashboard"]
+    },
+    {
+      "name": "orix-sidebar-01",
+      "type": "registry:block",
+      "title": "App Sidebar",
+      "description": "Collapsible sidebar with nav links, user avatar, and active state.",
+      "registryDependencies": ["button", "separator"],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/orix-sidebar-01/sidebar.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "categories": ["blocks", "layout"]
+    },
+    {
+      "name": "use-local-storage",
+      "type": "registry:hook",
+      "title": "useLocalStorage",
+      "description": "Type-safe localStorage hook with SSR safety and JSON serialization.",
+      "files": [
+        {
+          "path": "registry/new-york/hooks/use-local-storage/use-local-storage.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "categories": ["hooks", "utils"]
+    },
+    {
+      "name": "use-debounce",
+      "type": "registry:hook",
+      "title": "useDebounce",
+      "description": "Debounce any value or callback with configurable delay.",
+      "files": [
+        {
+          "path": "registry/new-york/hooks/use-debounce/use-debounce.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "categories": ["hooks", "utils"]
+    },
+    {
+      "name": "use-media-query",
+      "type": "registry:hook",
+      "title": "useMediaQuery",
+      "description": "Reactive media query hook. SSR-safe.",
+      "files": [
+        {
+          "path": "registry/new-york/hooks/use-media-query/use-media-query.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "categories": ["hooks", "utils"]
+    },
+    {
+      "name": "orix-chat-input",
+      "type": "registry:component",
+      "title": "Chat Input",
+      "description": "Textarea-based chat input with send button, file attach slot, and keyboard shortcut (Cmd+Enter).",
+      "registryDependencies": ["button", "orix-button"],
+      "files": [
+        {
+          "path": "registry/new-york/ai/orix-chat-input/orix-chat-input.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "categories": ["ai", "input"]
+    },
+    {
+      "name": "orix-ai-card",
+      "type": "registry:component",
+      "title": "AI Response Card",
+      "description": "Streaming-ready card for displaying AI-generated content. Includes loading skeleton and copy button.",
+      "registryDependencies": ["card", "button", "orix-card"],
+      "files": [
+        {
+          "path": "registry/new-york/ai/orix-ai-card/orix-ai-card.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "categories": ["ai", "display"]
+    }
+  ]
+}
