@@ -57,6 +57,7 @@ jobs:
       
       - name: Build frontend
         run: pnpm run build
+        working-directory: ./client
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -64,7 +65,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: 'dist'
+          path: 'client/dist'
       
       - name: Deploy to GitHub Pages
         id: deployment
