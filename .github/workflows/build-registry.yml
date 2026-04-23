@@ -1,0 +1,115 @@
+name: Build Registry
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'registry/**'
+      - 'registry.json'
+      - 'package.json'
+      - '.github/workflows/build-registry.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'registry/**'
+      - 'registry.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+      
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Verify registry.json
+        run: |
+          node -e "const r = require('./registry.json'); console.log('Registry items:', r.items.length); if (r.items.length < 11) throw new Error('Missing components');"
+      
+      - name: Build registry
+        run: pnpm exec shadcn build
+      
+      - name: Verify built registry
+        run: |
+          test -f public/r/registry.json || (echo "Registry JSON not found" && exit 1)
+          test -f public/r/orix-button.json || (echo "orix-button.json not found" && exit 1)
+          echo "✓ Registry build successful"
+      
+      - name: Upload registry artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: registry-${{ matrix.node-version }}
+          path: public/r/
+          retention-days: 30
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Type check
+        run: pnpm exec tsc --noEmit
+        continue-on-error: true
+      
+      - name: Validate registry schema
+        run: |
+          node -e "
+          const registry = require('./registry.json');
+          const required = ['name', 'homepage', 'items'];
+          required.forEach(field => {
+            if (!registry[field]) throw new Error('Missing required field: ' + field);
+          });
+          registry.items.forEach((item, i) => {
+            const itemRequired = ['name', 'type', 'title', 'description', 'files', 'categories'];
+            itemRequired.forEach(field => {
+              if (!item[field]) throw new Error(\`Item \${i} missing field: \${field}\`);
+            });
+          });
+          console.log('✓ Registry schema valid');
+          "
