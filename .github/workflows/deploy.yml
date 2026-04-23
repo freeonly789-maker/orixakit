@@ -6,24 +6,19 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -59,24 +54,16 @@ jobs:
         run: pnpm run build
         working-directory: ./client
       
-      - name: Prepare deployment files
+      - name: Prepare deployment
         run: |
-          mkdir -p _site
-          cp -r dist/public/* _site/
-          # Remove any problematic files
-          rm -rf _site/__manus__
-          rm -f _site/.gitkeep
-      
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: github-pages
-          path: '_site'
-          retention-days: 1
+          mkdir -p deploy
+          cp -r dist/public/* deploy/
+          rm -rf deploy/__manus__ deploy/.gitkeep
+          ls -la deploy/
       
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./deploy
+          cname: false
